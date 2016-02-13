@@ -1,6 +1,30 @@
 /**
  * Created by IlyaLitvinov on 11.02.16.
- */
+// */
+//describe('Model', function () {
+//    var model = null;
+//    beforeAll(function () {
+//        console.log('Before');
+//    });
+//
+//    beforeEach(function () {
+//        model = new Model();
+//        console.log('Before ech')
+//    });
+//
+//    it('Should have items array', function () {
+//        expect(model.items).toBeDefined();
+//        expect(model.items instanceof Array).toBe(true);
+//    });
+//
+//    it('Should have items array', function () {
+//        expect(model.items).toBeDefined();
+//        expect(model.items instanceof Array).toBe(true);
+//    });
+//
+//});
+
+
 describe("Model", function() {
     var model = null;
 
@@ -21,7 +45,7 @@ describe("Model", function() {
         expect(model.items instanceof Array).toBe(true);
     });
     it("Should delete item by id", function () {
-        spyOn(model.items, 'splice');
+        //spyOn(model.items, 'splice');
 
         model.deleteItem(0);
 
@@ -36,4 +60,22 @@ describe("Model", function() {
         expect(model.items.length).toEqual(length+1);
         expect(model.items[length].title).toEqual(title);
     })
+})
+
+
+describe("controller", function() {
+    var controller = null,
+        fakeModel = {},
+        fakeView = {
+            render: function () {
+                console.log('rendered')
+            }
+        };
+
+    beforeEach(function() {
+
+        controller = new Controller(fakeModel, fakeView);
+    });
+
+   it('')
 });
