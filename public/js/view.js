@@ -10,6 +10,8 @@ var View = (function () {
         this.input = $('.new-todo');
         this.output = $('.todo-list');
         this.filters = $($('.filters')).find('a');
+
+    
     }
 
     View.prototype.render = function (todos, params) {
