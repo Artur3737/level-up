@@ -3,6 +3,8 @@
  */
 var Model = (function () {
     function Model() {
+        var self = this;
+
         this.items = [
             {
                 id: 0,
@@ -20,53 +22,38 @@ var Model = (function () {
                 completed: false
             }
         ];
+
+        this.on('controller:start', function () {
+            self.change()
+        });
+        this.on('controller:added_item', function (data) {
+            self.addItem(data);
+
+            self.change();
+        })
     }
 
-    Model.prototype.getItems = function (filter) {
-        var self = this,
-            filters = {
-                'all': function () {
-                    return self.items;
-                },
-                'completed': function () {
-                   return self.items.filter(function (item) {
-                        return item.completed === true;
-                    })
-                },
-                'active': function () {
-                    return self.items.filter(function (item) {
-                        return item.completed === false;
-                    })
-                }
+    Model.prototype.getItems = function () {
+        return this.items;
 
-            };
-
-        return filters[filter]();
+    };
+    Model.prototype.change = function () {
+        this.emit('data:loaded', this.getItems());
     };
 
     function generateId() {
         return Math.floor((1 + Math.random()) * 0x10000);
     }
 
-    Model.prototype.setItem = function (itemTitle) {
-        var model = {
+    Model.prototype.addItem = function (title) {
+        var newItem =  {
             id: generateId(),
-            title: itemTitle,
-            complited: false,
-            checked: ''
+            title: title,
+            completed: false
         };
 
-        this.items.push(model);
+        this.items.push(newItem);
     };
-
-    Model.prototype.deleteItem = function (id) {
-        var currentIndex = this.items.indexOf(this.items.filter(function (item) {
-            return item.id === parseInt(id);
-        })[0]);
-
-        this.items.splice(currentIndex, 1);
-    };
-
 
     return Model;
 })();

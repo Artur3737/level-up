@@ -1,35 +1,58 @@
 /**
  * Created by IlyaLitvinov on 15.01.16.
  */
-(function (window) {
-    function observer() {
-        var topics = {};
+(function () {
+    function Observer() {
+        this.subscribers = {};
 
-        this.subscribe = function (topic, listener) {
-            // создаем объект topic, если еще не создан
-            if (!topics[topic]) topics[topic] = {queue: []};
-
-            // добавляем listener в очередь
-            var index = topics[topic].queue.push(listener) - 1;
-
-            // предоставляем возможность удаления темы
-            return {
-                remove: function () {
-                    delete topics[topic].queue[index];
-                }
-            };
+        this.on = function (event, callback) {
+            if(typeof this.subscribers[event] === 'undefined') {
+                this.subscribers[event] = []
+            }
+            this.subscribers[event].push(callback);
         };
-        this.publish = function (topic, info) {
-            // если темы не существует или нет подписчиков, не делаем ничего
-            if (!topics[topic] || !topics[topic].queue.length) return;
+        this.emit = function (event, data, context) {
+            var _context = context || window;
 
-            // проходим по очереди и вызываем подписки
-            var items = topics[topic].queue;
-            items.forEach(function (item) {
-                item(info || {});
+            if(typeof this.subscribers[event] === 'undefined') {
+                this.subscribers[event] = [];
+            }
+
+            this.subscribers[event].forEach(function (item) {
+                item.call(_context, data);
             });
         };
+
     }
 
-    window.observer = observer;
-})(window);
+    Object.assign(Object.prototype, new Observer());
+})();
+
+
+//var publisher = {
+//    emit: function () {
+//        observer.pub('myEvent', 'Hello world' );
+//    }
+//};
+//
+//var subscriber = {
+//    test: function (data) {
+//        console.log(data);
+//    },
+//    init: function () {
+//        observer.sub('myEvent', this.test);
+//    }
+//};
+//
+//var sub2 = {
+//    callback: function (data) {
+//        console.log('>>>>>>>'+data);
+//    },
+//    init: function () {
+//        observer.sub('myEvent', this.callback);
+//    }
+//};
+//
+//sub2.init();
+//
+//subscriber.init();
