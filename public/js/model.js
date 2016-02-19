@@ -26,17 +26,13 @@ var Model = (function () {
         this.on('controller:start', function () {
             self.change()
         });
-        this.on('controller:added_item', function (data) {
-            self.addItem(data);
-
-            self.change();
-        })
     }
 
     Model.prototype.getItems = function () {
         return this.items;
 
     };
+
     Model.prototype.change = function () {
         this.emit('data:loaded', this.getItems());
     };

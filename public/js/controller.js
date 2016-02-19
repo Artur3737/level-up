@@ -9,9 +9,6 @@ var Controller = (function () {
         this.view = view;
         this.model = model;
 
-        this.on('view:add_item', function (data) {
-            self.emit('controller:added_item', data);
-        });
 
         this.emit('controller:start');
     }
