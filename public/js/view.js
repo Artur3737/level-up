@@ -4,17 +4,26 @@
 //globals observer app
 
 var View = (function () {
-    function View() {
+    function View(model) {
         console.log('View');
+        var self = this;
+
+        this.model = model;
+
         this.activeBtn = $('#active');
         this.input = $('.new-todo');
         this.output = $('.todo-list');
         this.filters = $($('.filters')).find('a');
 
-    
+        this.on('data:loaded', function (data) {
+            console.log('Intercepted in view');
+            self.render(data);
+        });
+
+        this.handleEvents();
     }
 
-    View.prototype.render = function (todos, params) {
+    View.prototype.render = function (todos) {
         var self = this;
 
         this.view = '';
@@ -44,64 +53,11 @@ var View = (function () {
         this.view = this.view + template;
     };
 
-    View.prototype.addChannels = function (channelName, handler) {
+    View.prototype.handleEvents = function () {
         var self = this;
 
-        if (channelName === 'addItem') {
-            bindCustomEvents(self.input, 'keypress', function (e) {
-                var title = self.input.val();
-                //навешевание слбытия на клавишу enter code = 13
-                if ((e.which === 13 || e.type === 'blur') && title) {
-                    handler(title);
-                    self.input.val('');
-                }
-            });
-        }
-        if (channelName === 'deleteItem') {
-            bindCustomEvents(this.output, 'click', function (e) {
-                var target = null,
-                    id = null;
 
-                if (!$(e.target).hasClass('destroy')) {
-                    e.preventDefault();
-                    return;
-                }
-
-                target = e.target;
-
-                id = $(target).parent().parent().attr('data-id');
-                handler(id);
-            })
-        }
-        if (channelName === 'filter') {
-            bindCustomEvents(this.filters, 'click', function (e) {
-                $(self.filters).removeClass('selected');
-
-                $(this).addClass('selected');
-
-                handler($(e.target).attr('data-filter'));
-            })
-        }
-        if (channelName === 'status') {
-            bindCustomEvents(this.output, 'click', function (e) {
-                var target = null,
-                    id = null;
-
-                if ($(e.target).hasClass('toggle')) {
-                    console.log('lalala');
-                }
-
-                id = $(e.target).parent().parent().attr('data-id');
-                handler(id);
-
-            })
-        
-        }
     };
-
-    function bindCustomEvents(target, type, callback) {
-        target.on(type, callback);
-    }
 
     return View;
 })();

@@ -18,6 +18,10 @@
   "dependencies": {
     "bootstrap": "~3.3.6",
     "jquery": "~2.2.0",
+<<<<<<< HEAD
     "jasmine-core": "^2.4.1"
+=======
+    "jasmine-core": "~2.4.1"
+>>>>>>> mvc
   }
 }
