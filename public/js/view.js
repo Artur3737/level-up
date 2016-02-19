@@ -4,15 +4,26 @@
 //globals observer app
 
 var View = (function () {
-    function View () {
+    function View(model) {
         console.log('View');
+        var self = this;
+
+        this.model = model;
+
         this.activeBtn = $('#active');
         this.input = $('.new-todo');
         this.output = $('.todo-list');
         this.filters = $($('.filters')).find('a');
+
+        this.on('data:loaded', function (data) {
+            console.log('Intercepted in view');
+            self.render(data);
+        });
+
+        this.handleEvents();
     }
 
-    View.prototype.render = function (todos, params) {
+    View.prototype.render = function (todos) {
         var self = this;
 
         this.view = '';
@@ -26,90 +37,55 @@ var View = (function () {
 
     View.prototype.renderOne = function (item) {
         //Шаблон для отрисовки одного элемента списка
-        var defaultTemplate =  '<li data-id="{{id}}" class="{{completed}}">'
-            + '<div class="view">'
-            + '<input class="toggle" type="checkbox" {{checked}}>'
-            + '<label class = "title">{{title}}</label>'
-            + '<button class="destroy"></button>'
-            + '</div>'
-            + '</li>',
+        var defaultTemplate = '<li data-id="{{id}}" class="{{completed}} ">'
+                + '<div class="view">'
+                + '<input class="toggle" type="checkbox" {{checked}}>'
+                + '<label class = "title">{{title}}</label>'
+                + '<button class="destroy"></button>'
+                + '</div>'
+                + '</li>',
             template = defaultTemplate.replace('{{id}}', item.id);
 
         template = template.replace('{{completed}}', item.completed);
-        template = template.replace('{{checked}}', item.completed ? 'checked' : '');
+        template = template.replace('{{checked}}', item.checked);
         template = template.replace('{{title}}', item.title);
 
         this.view = this.view + template;
     };
 
-    View.prototype.addChannels = function (channelName, handler) {
+    View.prototype.handleEvents = function () {
         var self = this;
 
-        if(channelName === 'addItem') {
-            bindCustomEvents(self.input, 'blur keypress', function (e) {
-                var title = self.input.val();
-
-                // навешевание слбытия на клавишу enter code = 13
-                if((e.which === 13 || e.type === 'blur') && title) {
-                    handler(title);
-                    self.input.val('');
-                }                
+            this.input.on('blur', function () {
+                self.emit('view:add_Item', $(this).val());
+                $(this).val('');
             });
-        } else if (channelName === 'deleteItem') {
-            bindCustomEvents(this.output, 'click', function (e) {
+
+            this.output.on('click', function (e) {
                 var target = null,
                     id = null;
 
                 if (!$(e.target).hasClass('destroy')) {
-                    e.preventDefault();
                     return;
                 }
 
                 target = e.target;
 
                 id = $(target).parent().parent().attr('data-id');
-                handler(id);
+                self.emit('view:delete_item', id);
             });
-        } else if (channelName === 'completed') {
-            bindCustomEvents(this.output, 'click', function (e) {
+
+            this.output.on('click', function (e) {
+
                 if ($(e.target).hasClass('toggle')) {
                     id = $(e.target).parent().parent().attr('data-id');
-                    handler(id);
+                    self.emit('view:completed', id);
                 }
-            });
-        } else if (channelName === 'filterTasks') {
-            bindCustomEvents(this.filters, 'click', function (e) {
+            })
+      
 
-                if (!$(e.target).hasClass('selected')) {
-                    e.preventDefault();
-                    return;
-                }
-
-                $(self.filters).removeClass('selected');
-                $(this).addClass('selected');
-
-                handler($(e.target).attr('data-filter'));
-            });
-        } else if (channelName === 'clearCompleted') {
-            bindCustomEvents(this.button, 'click', function (e) {
-
-                if ($(e.target).hasClass('clear-completed')) {
-                    e.preventDefault();
-                    return;
-                }
-
-                target = e.target;
-
-                id = $(target).parent().parent().attr('data-id');
-                handler(id)
-            });
-        }
     };
 
-
-    function bindCustomEvents(target, type, callback) {
-        target.on(type, callback);
-    }
 
     return View;
 })();

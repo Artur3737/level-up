@@ -2,61 +2,41 @@
  * Created by IlyaLitvinov on 14.01.16.
  */
 var Controller = (function () {
-    function Controller (model, view) {
+    function Controller(model, view) {
         console.log('init Controller');
         var self = this;
 
         this.view = view;
         this.model = model;
-        this.filter = 'all';
 
-        //Первоначальная отрисовка списка
-        this.show();
-        this.view.addChannels('addItem', function (title) {
-            self.setItem(title);
+
+        this.emit('controller:start');
+
+        this.on('view:add_Item', function (data) {
+            self.emit('controller:add_Item', data);
         });
-        this.view.addChannels('deleteItem', function (id) {
-            self.deleteItem(id);
+
+        this.on('view:delete_item', function (id) {
+            self.emit('controller:delete_item', id)
         });
-        this.view.addChannels('ttt', function (id) {
-            self.changeState(id);
-        });
-        this.view.addChannels('filterTasks', function (filter) {
-            self.toFilter(filter);
-        });
-        this.view.addChannels('clearCompleted', function (id) {
-            self.completedClear(id);
-        });
+
+        this.on('view:completed', function (id) {
+            self.emit('controller:completed', id)
+        })
     }
 
-    Controller.prototype.show = function () {
-        this.view.render(this.model.getItems(this.filter));
-    };
-
-    Controller.prototype.setItem = function (title) {
-        this.model.setItem(title);
-        this.show();
+    Controller.prototype.show = function (data) {
+        this.emit('render', data);
     };
 
     Controller.prototype.deleteItem = function (id) {
-        this.model.deleteItem(id);
-        this.show();
+        this.emit('render', id);
     };
 
-    Controller.prototype.changeState = function (id) {
-        this.model.getblabla(id);
-        this.show();
-    };   
-
-    Controller.prototype.toFilter = function (filter) {
-        this.filter = filter;
-        this.show();
+    Controller.prototype.completed = function (id) {
+        this.emit('render', id);
     };
 
-    Controller.prototype.completedClear = function (id) {
-        this.model.clearComplet(id);
-        this.show();
-    }; 
 
     return Controller;
 })();

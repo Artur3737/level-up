@@ -1,60 +1,69 @@
 /**
  * Created by IlyaLitvinov on 14.01.16.
  */
-var Model = (function (){
+var Model = (function () {
     function Model() {
-        this.items = [{
+        var self = this;
+
+        this.items = [
+            {
                 id: 0,
                 title: "Test",
-                completed: true,
+                completed: true
             },
             {
                 id: 1,
-                title: "Test2",
-                completed: false,
+                title: 'test2',
+                completed: false
             },
             {
                 id: 2,
-                title: "Test3",
-                completed: false,
+                title: 'test2',
+                completed: false
             }
-        ]
+        ];
+
+        this.on('controller:start', function () {
+            self.change()
+        });
+
+        this.on('controller:add_Item', function (data) {
+            self.addItem(data);
+            self.change()
+        });
+
+        this.on('controller:delete_item', function (id) {
+            self.deleteItem(id);
+            self.change()
+        });
+
+        this.on('controller:completed', function (id) {
+            self.deleteItem(id);
+            self.change()
+        });
     }
 
-    Model.prototype.getItems = function (filter) {
-        var self = this,
-            filters = {
-                'all': function () {
-                    return self.items;
-                },
-                'active': function () {
-                    return self.items.filter(function (item) {
-                        return item.completed === false;
-                    });
-                },
-                'completed': function () {
-                   return self.items.filter(function (item) {
-                        return item.completed === true;
-                    });
-                }
-            };
+    Model.prototype.getItems = function () {
+        return this.items;
 
-        return filters[filter]();
+    };
+
+    Model.prototype.change = function () {
+        this.emit('data:loaded', this.getItems());
     };
 
     function generateId() {
         return Math.floor((1 + Math.random()) * 0x10000);
     }
 
-    Model.prototype.setItem = function (itemTitle) {
-        var model = {
+    Model.prototype.addItem = function (title) {
+        var newItem =  {
             id: generateId(),
-            title: itemTitle,
-            completed: false,
-            checked: ''
+            title: title,
+            completed: false
         };
 
-        this.items.push(model);
+        this.items.push(newItem);
     };
 
     Model.prototype.deleteItem = function (id) {
@@ -74,14 +83,6 @@ var Model = (function (){
 
         this.items[currentIndex].completed = !this.items[currentIndex].completed;
     };
-
-    Model.prototype.clearComplet = function (id) {
-        var currentIndex = this.items.indexOf(this.items.filter(function (item) {
-            return item.id === parseInt(id);
-        })[0]);
-        
-        this.items.splice(currentIndex, 1);
-    }
 
     return Model;
 })();
