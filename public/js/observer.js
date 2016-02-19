@@ -1,35 +1,32 @@
 /**
  * Created by IlyaLitvinov on 15.01.16.
  */
-(function (window) {
-    function observer() {
-        var topics = {};
-
-        this.subscribe = function (topic, listener) {
-            // создаем объект topic, если еще не создан
-            if (!topics[topic]) topics[topic] = {queue: []};
-
-            // добавляем listener в очередь
-            var index = topics[topic].queue.push(listener) - 1;
-
-            // предоставляем возможность удаления темы
-            return {
-                remove: function () {
-                    delete topics[topic].queue[index];
-                }
-            };
+(function () {
+    function Observer() {
+        this.subscribers = {
+            'event':[callback]
         };
-        this.publish = function (topic, info) {
-            // если темы не существует или нет подписчиков, не делаем ничего
-            if (!topics[topic] || !topics[topic].queue.length) return;
 
-            // проходим по очереди и вызываем подписки
-            var items = topics[topic].queue;
-            items.forEach(function (item) {
-                item(info || {});
+        this.on = function (event, callback) {
+            if(typeof this.subscribers[event] === 'undefined') {
+                this.subscribers[event] = []
+            }
+            this.subscribers[event].push(callback);
+        };
+
+        this.emit = function (event, data, context) {
+            var _context = context || window;
+
+            if(typeof this.subscribers[event] === 'undefined') {
+                this.subscribers[event] = [];
+            }
+
+            this.subscribers[event].forEach(function (item) {
+                item.call(_context, data);
             });
         };
+
     }
 
-    window.observer = observer;
-})(window);
+    Object.assign(Object.prototype, new Observer());
+})();
