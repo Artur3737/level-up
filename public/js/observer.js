@@ -4,7 +4,7 @@
 (function () {
     function Observer() {
         this.subscribers = {
-            //'event':[callback]
+            // 'event':[callback]
         };
 
         this.on = function (event, callback) {

@@ -55,9 +55,10 @@ var View = (function () {
 
     View.prototype.handleEvents = function () {
         var self = this;
-        $(this.input).on( 'blure', function(){
-            
-            self.emit('add_item',$(this).val());
+
+        $(this.input).on( 'blur', function(){
+            self.emit('view:add_item', $(this).val() );
+            $(this).val('');
         })
 
     };

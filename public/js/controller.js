@@ -11,12 +11,16 @@ var Controller = (function () {
 
 
         this.emit('controller:start');
+        
+        this.on('view:add_item', function(data){
+            self.emit('controller:add_item', data);
+        })
     }
 
     Controller.prototype.show = function (data) {
         this.emit('render', data);
     };
-    
+
 
     return Controller;
 })();

@@ -26,6 +26,11 @@ var Model = (function () {
         this.on('controller:start', function () {
             self.change()
         });
+
+        this.on('controller:add_item', function(data){
+            self.addItem(data);
+             self.change();
+        })
     }
 
     Model.prototype.getItems = function () {
