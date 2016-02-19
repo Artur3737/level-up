@@ -16,6 +16,7 @@ var Controller = (function () {
     Controller.prototype.show = function (data) {
         this.emit('render', data);
     };
+    
 
     return Controller;
 })();
