@@ -3,13 +3,11 @@
  */
 (function () {
     function Observer() {
-        this.subscribers = {
-            'event':[callback]
-        };
+        this.subscribers = {};
 
         this.on = function (event, callback) {
             if(typeof this.subscribers[event] === 'undefined') {
-                this.subscribers[event] = []
+                this.subscribers[event] = [];
             }
             this.subscribers[event].push(callback);
         };

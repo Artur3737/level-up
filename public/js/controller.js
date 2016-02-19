@@ -11,6 +11,18 @@ var Controller = (function () {
 
 
         this.emit('controller:start');
+
+        this.on('view:addItem', function (data) {
+            self.emit('controller:addItem', data);
+        });
+
+        this.on('view:destroy', function (id) {
+            self.emit('controller:destroy', id);
+        });
+
+        this.on('view:completed', function (id) {
+            self.emit('controller:completed', id);
+        });
     }
 
     Controller.prototype.show = function (data) {

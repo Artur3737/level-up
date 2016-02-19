@@ -47,7 +47,7 @@ var View = (function () {
             template = defaultTemplate.replace('{{id}}', item.id);
 
         template = template.replace('{{completed}}', item.completed);
-        template = template.replace('{{checked}}', item.checked);
+        template = template.replace('{{checked}}', item.completed ? 'checked' : '');
         template = template.replace('{{title}}', item.title);
 
         this.view = this.view + template;
@@ -56,7 +56,39 @@ var View = (function () {
     View.prototype.handleEvents = function () {
         var self = this;
 
+        this.input.on('keypress', function (e) {
+            if (e.which === 13) {
+                self.emit('view:addItem', $(this).val());
 
+                $(this).val('');
+            }
+        });
+
+        this.output.on('click', function (e) {
+            var target = null,
+                id = null;
+
+            if($(e.target).hasClass('destroy')) {
+                console.log('Destroy');
+
+                id = $(e.target).closest('li').attr('data-id');
+
+                self.emit('view:destroy', id);
+            }
+        });
+
+        this.output.on('click', function (e) {
+            var target = null,
+                id = null;
+
+            if($(e.target).hasClass('toggle')) {
+                console.log('toggle');
+
+                id = $(e.target).closest('li').attr('data-id');
+
+                self.emit('view:completed', id);
+            }
+        });
     };
 
     return View;

@@ -24,7 +24,22 @@ var Model = (function () {
         ];
 
         this.on('controller:start', function () {
-            self.change()
+            self.change();
+        });
+
+        this.on('controller:addItem', function (data) {
+            self.addItem(data);
+            self.change();
+        });
+
+        this.on('controller:destroy', function (id) {
+            self.deleteItem(id);
+            self.change();
+        });
+
+        this.on('controller:completed', function (id) {
+            self.completeItem(id);
+            self.change();
         });
     }
 
@@ -50,6 +65,26 @@ var Model = (function () {
 
         this.items.push(newItem);
     };
+
+    Model.prototype.deleteItem = function (id) {
+        var currentIndex = this.items.indexOf(this.items.filter(function (item) {
+
+            return item.id === parseInt(id);
+
+        })[0]);
+
+        this.items.splice(currentIndex, 1);
+     };
+
+     Model.prototype.completeItem = function (id) {
+        var currentIndex = this.items.indexOf(this.items.filter(function (item) {
+
+            return item.id === parseInt(id);
+
+        })[0]);
+
+        this.items[currentIndex].completed = !this.items[currentIndex].completed;
+     };
 
     return Model;
 })();
