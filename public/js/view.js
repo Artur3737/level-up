@@ -56,36 +56,37 @@ var View = (function () {
     View.prototype.handleEvents = function () {
         var self = this;
 
-            this.input.on('blur', function () {
+        this.input.on('blur keypress', function (e) {
+            var title = self.input.val();
+            // навешевание слбытия на клавишу enter code = 13
+            if((e.which === 13 || e.type === 'blur') && title) {
                 self.emit('view:add_Item', $(this).val());
                 $(this).val('');
-            });
+            }         
+        });
 
-            this.output.on('click', function (e) {
-                var target = null,
-                    id = null;
+        this.output.on('click', function (e) {
+            var target = null,
+                id = null;
 
-                if (!$(e.target).hasClass('destroy')) {
-                    return;
-                }
+            if (!$(e.target).hasClass('destroy')) {
+                return;
+            }
 
-                target = e.target;
+            target = e.target;
 
-                id = $(target).parent().parent().attr('data-id');
-                self.emit('view:delete_item', id);
-            });
+            id = $(target).parent().parent().attr('data-id');
+            self.emit('view:delete_item', id);
+        });
 
-            this.output.on('click', function (e) {
+        this.output.on('click', function (e) {
 
-                if ($(e.target).hasClass('toggle')) {
-                    id = $(e.target).parent().parent().attr('data-id');
-                    self.emit('view:completed', id);
-                }
-            })
-      
-
+            if ($(e.target).hasClass('toggle')) {
+                id = $(e.target).parent().parent().attr('data-id');
+                self.emit('view:completed', id);
+            }
+        });   
     };
-
 
     return View;
 })();

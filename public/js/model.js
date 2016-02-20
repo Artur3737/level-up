@@ -13,12 +13,12 @@ var Model = (function () {
             },
             {
                 id: 1,
-                title: 'test2',
+                title: 'Test1',
                 completed: false
             },
             {
                 id: 2,
-                title: 'test2',
+                title: 'Test2',
                 completed: false
             }
         ];
@@ -38,7 +38,7 @@ var Model = (function () {
         });
 
         this.on('controller:completed', function (id) {
-            self.deleteItem(id);
+            self.getCompleted(id);
             self.change()
         });
     }
@@ -74,7 +74,7 @@ var Model = (function () {
         this.items.splice(currentIndex, 1);
     };
 
-    Model.prototype.getblabla = function (id) {
+    Model.prototype.getCompleted = function (id) {
         console.log(id);
         
         var currentIndex = this.items.indexOf(this.items.filter(function (item) {

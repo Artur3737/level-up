@@ -33,7 +33,7 @@ var Controller = (function () {
         this.emit('render', id);
     };
 
-    Controller.prototype.completed = function (id) {
+    Controller.prototype.getCompleted = function (id) {
         this.emit('render', id);
     };
 
