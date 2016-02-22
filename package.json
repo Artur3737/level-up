@@ -13,6 +13,7 @@
     "body-parser": "^1.14.1",
     "chai": "^3.4.1",
     "express": "^4.13.3",
+    "gulp": "^3.9.1",
     "istanbul": "^0.4.1",
     "lodash": "^3.10.1",
     "mocha": "^2.3.4",
@@ -20,6 +21,16 @@
   },
   "devDependencies": {
     "chai": "^3.4.1",
+    "gulp": "^3.9.1",
+    "gulp-autoprefixer": "^3.1.0",
+    "gulp-clean": "^0.3.1",
+    "gulp-concat-css": "^2.2.0",
+    "gulp-debug": "^2.1.2",
+    "gulp-minify-css": "^1.2.3",
+    "gulp-notify": "^2.2.0",
+    "gulp-rename": "^1.2.2",
+    "gulp-sourcemap": "^1.0.1",
+    "gulp-sourcemaps": "^1.6.0",
     "istanbul": "^0.4.1",
     "mocha": "^2.3.4"
   }
