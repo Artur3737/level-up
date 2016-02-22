@@ -1,6 +1,4 @@
-/**
- * Created by IlyaLitvinov on 14.01.16.
- */
+
 var Model = (function () {
     function Model() {
         var self = this;
@@ -31,6 +29,10 @@ var Model = (function () {
             self.addItem(data);
              self.change();
         })
+		 this.on('controller:delete_item', function(data){
+            self.deleteItem(data);
+             self.change();
+        })
     }
 
     Model.prototype.getItems = function () {
@@ -54,6 +56,13 @@ var Model = (function () {
         };
 
         this.items.push(newItem);
+    };
+	 Model.prototype.deleteItem = function (id) {
+        var currentIndex = this.items.indexOf(this.items.filter(function (item) {
+            return item.id === parseInt(id);
+        })[0]);
+
+        this.items.splice(currentIndex, 1);
     };
 
     return Model;

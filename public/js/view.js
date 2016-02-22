@@ -1,6 +1,4 @@
-/**
- * Created by IlyaLitvinov on 14.01.16.
- */
+
 //globals observer app
 
 var View = (function () {
@@ -60,6 +58,16 @@ var View = (function () {
             self.emit('view:add_item', $(this).val() );
             $(this).val('');
         })
+		 $(this.output).on( 'click', function(e){
+            self.emit('view:delete_item', $(e.target) );
+                if (!$(e.target).hasClass('destroy')) {
+                    e.preventDefault();
+                    return;
+                }
+                target = e.target;
+                id = $(target).parent().parent().attr('data-id');
+                handler(id);
+            })
 
     };
 
