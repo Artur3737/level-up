@@ -1,4 +1,6 @@
 body {
+  background: -webkit-gradient(linear, left bottom, left top, from(#fefcea), to(#f1da36));
+  background: -webkit-linear-gradient(bottom, #fefcea, #f1da36);
   background: linear-gradient(to top, #fefcea, #f1da36);
 }
 
