@@ -85,7 +85,13 @@ var View = (function () {
                 id = $(e.target).parent().parent().attr('data-id');
                 self.emit('view:completed', id);
             }
-        });   
+        });
+
+        this.filters.on('click', function (e) {
+            $(self.filters).removeClass('selected');
+            $(this).addClass('selected');
+            self.emit('view:toFilter', $(e.target).attr('data-filter'));
+        })   
     };
 
     return View;

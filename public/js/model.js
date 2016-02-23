@@ -3,7 +3,9 @@
  */
 var Model = (function () {
     function Model() {
-        var self = this;
+        var self = this;    
+
+        this.activeFilter = 'all';
 
         this.items = [
             {
@@ -41,11 +43,33 @@ var Model = (function () {
             self.getCompleted(id);
             self.change()
         });
+
+        this.on('controller:toFilter', function (typeOfFilter) {
+            self.activeFilter = typeOfFilter;
+            self.change()
+        })
     }
 
     Model.prototype.getItems = function () {
-        return this.items;
+        var self = this,
+            filters = {
+                'all': function () {
+                    return self.items;
+                },
+                'completed': function () {
+                   return self.items.filter(function (item) {
+                        return item.completed === true;
+                    })
+                },
+                'active': function () {
+                    return self.items.filter(function (item) {
+                        return item.completed === false;
+                    })
+                }
 
+            };
+
+        return filters[this.activeFilter]();
     };
 
     Model.prototype.change = function () {

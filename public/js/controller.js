@@ -22,20 +22,24 @@ var Controller = (function () {
 
         this.on('view:completed', function (id) {
             self.emit('controller:completed', id)
-        })
+        });
+
+        this.on('view:toFilter', function (typeOfFilter) {
+            self.emit('controller:toFilter', typeOfFilter)
+        });
     }
 
     Controller.prototype.show = function (data) {
         this.emit('render', data);
     };
 
-    Controller.prototype.deleteItem = function (id) {
-        this.emit('render', id);
-    };
+    // Controller.prototype.deleteItem = function (id) {
+    //     this.emit('render', id);
+    // };
 
-    Controller.prototype.getCompleted = function (id) {
-        this.emit('render', id);
-    };
+    // Controller.prototype.getCompleted = function (id) {
+    //     this.emit('render', id);
+    // };
 
 
     return Controller;
