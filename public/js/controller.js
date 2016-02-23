@@ -9,7 +9,6 @@ var Controller = (function () {
         this.view = view;
         this.model = model;
 
-
         this.emit('controller:start');
 
         this.on('view:addItem', function (data) {
@@ -23,11 +22,14 @@ var Controller = (function () {
         this.on('view:completed', function (id) {
             self.emit('controller:completed', id);
         });
-    }
 
-    Controller.prototype.show = function (data) {
-        this.emit('render', data);
-    };
+        this.on('view:filter', function (filter) {
+            self.emit('controller:filter', filter);
+        });
+        this.on('view:clearCompleted', function () {
+            self.emit('controller:clearCompleted');
+        });
+    }
 
     return Controller;
 })();

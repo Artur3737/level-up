@@ -13,14 +13,20 @@ var View = (function () {
         this.activeBtn = $('#active');
         this.input = $('.new-todo');
         this.output = $('.todo-list');
-        this.filters = $($('.filters')).find('a');
+        this.filters = $('.filters a');
+        this.clearCompleted = $('.clear-completed');
 
         this.on('data:loaded', function (data) {
             console.log('Intercepted in view');
+
             self.render(data);
         });
 
         this.handleEvents();
+
+        this.on('items:left', function (left) {
+            self.leftItems(left);
+        });
     }
 
     View.prototype.render = function (todos) {
@@ -54,7 +60,9 @@ var View = (function () {
     };
 
     View.prototype.handleEvents = function () {
-        var self = this;
+        var self = this,
+            target = null,
+            id = null;
 
         this.input.on('keypress', function (e) {
             if (e.which === 13) {
@@ -65,9 +73,6 @@ var View = (function () {
         });
 
         this.output.on('click', function (e) {
-            var target = null,
-                id = null;
-
             if($(e.target).hasClass('destroy')) {
                 console.log('Destroy');
 
@@ -78,9 +83,6 @@ var View = (function () {
         });
 
         this.output.on('click', function (e) {
-            var target = null,
-                id = null;
-
             if($(e.target).hasClass('toggle')) {
                 console.log('toggle');
 
@@ -89,6 +91,34 @@ var View = (function () {
                 self.emit('view:completed', id);
             }
         });
+
+        this.filters.on('click', function (e) {
+            var filter = null;
+
+            if ($(e.target).hasClass('selected')) {
+                e.stopPropagation();
+                return;
+            }
+
+            $(self.filters).removeClass('selected');
+            $(e.target).addClass('selected');
+
+            filter = $(e.target).attr('data-filter');
+
+            self.emit('view:filter', filter);
+        });
+
+        $('.clear-completed').on('click', function () {
+            self.emit('view:clearCompleted');
+        });
+    };
+
+    View.prototype.leftItems = function (left) {
+        $('.todo-count')
+            .html('<strong>'
+                + left
+                + '<strong>'
+                + ' items left');
     };
 
     return View;
