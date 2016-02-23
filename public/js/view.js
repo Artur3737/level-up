@@ -55,35 +55,36 @@ var View = (function () {
     var self = this;
 
     $(this.input).on('blur', function () {
-        
-        self.emit('view:add_item', $(this).val());
-        $(this).val('');
+        var title = self.input.val();
+        if(title){
+            self.emit('view:add_item', $(this).val());
+            $(this).val(''); 
+        }
+       
     });
 
     $(this.output).on('click', function (e) {
-        var target = null,
-            id = null;
         
         if ($(e.target).hasClass('destroy')) {
            
-             id = $(target).parent().parent().attr('data-id');
+             id = $(e.target).closest('li').attr('data-id');
 
             self.emit('view:delete_item', id);
         }
 
     });
         
-//        $(this.output).on('click', function (e) {
-//            var target = null,
-//                id = null;
-//
-//            if($(e.target).hasClass('toggle')) {
-//
-//                id = $(e.target).closest('li').attr('data-id');
-//
-//            self.emit('view:checked_item', id);
-//            }
-//    });
+       $(this.output).on('click', function (e) {
+           var target = null,
+               id = null;
+
+           if($(e.target).hasClass('toggle')) {
+
+               id = $(e.target).closest('li').attr('data-id');
+
+           self.emit('view:checked_item', id);
+           }
+   });
         
 
 };

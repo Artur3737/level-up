@@ -16,9 +16,9 @@ var Controller = (function () {
 		this.on('view:delete_item', function(id){
             self.emit('controller:delete_item', id);
         })
-//        this.on('view:checked_item', function(data){
-//            self.emit('controller:checked_item', data);
-//        });
+       this.on('view:checked_item', function(id){
+           self.emit('controller:checked_item', id);
+       });
     }
 
     Controller.prototype.show = function (data) {

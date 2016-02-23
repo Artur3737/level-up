@@ -7,7 +7,7 @@ var Model = (function () {
             {
                 id: 0,
                 title: "Test",
-                completed: true
+                completed: false
             },
             {
                 id: 1,
@@ -34,8 +34,8 @@ var Model = (function () {
              self.change();
         });
          
-         this.on('controller:checked_item', function(data){
-            self.checkItem(data);
+         this.on('controller:checked_item', function(id){
+            self.checkItem(id);
              self.change();
         })
     }
@@ -73,16 +73,16 @@ var Model = (function () {
         this.items.splice(currentIndex, 1);
     };
     
-//     Model.prototype.checkItem = function (id) {
-//        
-//        var currentIndex = this.items.indexOf(this.items.filter(function (item) {
-//            return item.id === parseInt(id);
-//        })[0]);
-//
-//        this.items[currentIndex].completed = !this.items[currentIndex].completed;
-//        console.log(this.items[currentIndex]);
-//       
-//    };
+    Model.prototype.checkItem = function (id) {
+       
+       var currentIndex = this.items.indexOf(this.items.filter(function (item) {
+           return item.id === parseInt(id);
+       })[0]);
+
+       this.items[currentIndex].completed = !this.items[currentIndex].completed;
+       console.log(this.items[currentIndex]);
+      
+   };
 
     return Model;
 })();
