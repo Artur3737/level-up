@@ -28,9 +28,14 @@ var Model = (function () {
         this.on('controller:add_item', function(data){
             self.addItem(data);
              self.change();
-        })
-		 this.on('controller:delete_item', function(data){
-            self.deleteItem(data);
+        });
+		 this.on('controller:delete_item', function(id){
+            self.deleteItem(id);
+             self.change();
+        });
+         
+         this.on('controller:check_item', function(id){
+            self.deleteItem(id);
              self.change();
         })
     }
@@ -59,7 +64,9 @@ var Model = (function () {
     };
 	 Model.prototype.deleteItem = function (id) {
         var currentIndex = this.items.indexOf(this.items.filter(function (item) {
+            
             return item.id === parseInt(id);
+            
         })[0]);
 
         this.items.splice(currentIndex, 1);

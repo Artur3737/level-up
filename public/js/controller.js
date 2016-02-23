@@ -13,8 +13,8 @@ var Controller = (function () {
         this.on('view:add_item', function(data){
             self.emit('controller:add_item', data);
         })
-		this.on('view:delete_item', function(data){
-            self.emit('controller:delete_item', data);
+		this.on('view:delete_item', function(id){
+            self.emit('controller:delete_item', id);
         })
     }
 

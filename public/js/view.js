@@ -52,24 +52,31 @@ var View = (function () {
     };
 
     View.prototype.handleEvents = function () {
-        var self = this;
+    var self = this;
 
-        $(this.input).on( 'blur', function(){
-            self.emit('view:add_item', $(this).val() );
-            $(this).val('');
-        })
-		 $(this.output).on( 'click', function(e){
-            self.emit('view:delete_item', $(e.target) );
-                if (!$(e.target).hasClass('destroy')) {
-                    e.preventDefault();
-                    return;
-                }
-                target = e.target;
-                id = $(target).parent().parent().attr('data-id');
+    $(this.input).on('blur', function () {
+        self.emit('view:add_item', $(this).val());
+        $(this).val('');
+    });
+
+    $(this.output).on('click', function (e) {
+        var target = null,
+            id = null;
+        
+
+        if ($(e.target).hasClass('destroy')) {
+            
+           
+             id = $(target).parent().parent().attr('data-id');
                 handler(id);
-            })
 
-    };
+            self.emit('view:delete_item', id);
+        }
+
+       
+    });
+
+};
 
     return View;
 })();
