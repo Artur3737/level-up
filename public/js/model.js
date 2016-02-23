@@ -34,10 +34,10 @@ var Model = (function () {
              self.change();
         });
          
-//         this.on('controller:check_item', function(id){
-//            self.checkItem(id);
-//             self.change();
-//        })
+         this.on('controller:checked_item', function(data){
+            self.checkItem(data);
+             self.change();
+        })
     }
 
     Model.prototype.getItems = function () {
@@ -62,6 +62,7 @@ var Model = (function () {
 
         this.items.push(newItem);
     };
+    
 	 Model.prototype.deleteItem = function (id) {
         var currentIndex = this.items.indexOf(this.items.filter(function (item) {
             
@@ -71,6 +72,17 @@ var Model = (function () {
 
         this.items.splice(currentIndex, 1);
     };
+    
+//     Model.prototype.checkItem = function (id) {
+//        
+//        var currentIndex = this.items.indexOf(this.items.filter(function (item) {
+//            return item.id === parseInt(id);
+//        })[0]);
+//
+//        this.items[currentIndex].completed = !this.items[currentIndex].completed;
+//        console.log(this.items[currentIndex]);
+//       
+//    };
 
     return Model;
 })();

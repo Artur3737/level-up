@@ -12,10 +12,13 @@ var Controller = (function () {
         
         this.on('view:add_item', function(data){
             self.emit('controller:add_item', data);
-        })
+        });
 		this.on('view:delete_item', function(id){
             self.emit('controller:delete_item', id);
         })
+//        this.on('view:checked_item', function(data){
+//            self.emit('controller:checked_item', data);
+//        });
     }
 
     Controller.prototype.show = function (data) {
