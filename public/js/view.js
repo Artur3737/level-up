@@ -68,7 +68,7 @@ var View = (function () {
             
            
              id = $(target).parent().parent().attr('data-id');
-                handler(id);
+    
 
             self.emit('view:delete_item', id);
         }
