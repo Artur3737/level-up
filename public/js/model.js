@@ -3,6 +3,7 @@ var Model = (function () {
     function Model() {
         var self = this;
 
+        this.activeFilter='all';
         this.items = [
             {
                 id: 0,
@@ -37,16 +38,16 @@ var Model = (function () {
          this.on('controller:checked_item', function(id){
             self.checkItem(id);
              self.change();
+        });
+
+          this.on('controller:filter_item', function(filter){     
+            this.activeFilter = filter;
+             self.change();
         })
     }
 
-    Model.prototype.getItems = function () {
-        return this.items;
-
-    };
-
     Model.prototype.change = function () {
-        this.emit('data:loaded', this.getItems());
+        this.emit('data:loaded', this.filterItem());
     };
 
     function generateId() {
@@ -81,6 +82,29 @@ var Model = (function () {
 
        this.items[currentIndex].completed = !this.items[currentIndex].completed;
        console.log(this.items[currentIndex]);
+      
+   };
+
+   Model.prototype.filterItem = function () {
+       var self = this,
+            filters = {
+                'all': function () {
+                    return self.items;
+                },
+                'completed': function () {
+                   return self.items.filter(function (item) {
+                        return item.completed === true;
+                    })
+                },
+                'active': function () {
+                    return self.items.filter(function (item) {
+                        return item.completed === false;
+                    })
+                }
+
+            };
+
+        return filters[this.activeFilter]();
       
    };
 

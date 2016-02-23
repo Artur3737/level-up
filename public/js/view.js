@@ -85,6 +85,14 @@ var View = (function () {
            self.emit('view:checked_item', id);
            }
    });
+       $(this.filters).on('click', function (e) {
+           $(self.filters).removeClass('selected');
+
+            $(this).addClass('selected');
+
+           self.emit('view:filter_item', $(e.target).attr('data-filter') );
+           console.log('selected');
+   });
         
 
 };

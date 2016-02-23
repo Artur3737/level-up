@@ -19,6 +19,9 @@ var Controller = (function () {
        this.on('view:checked_item', function(id){
            self.emit('controller:checked_item', id);
        });
+        this.on('view:filter_item', function(filter){
+           self.emit('controller:filter_item', filter);
+       });
     }
 
     Controller.prototype.show = function (data) {
