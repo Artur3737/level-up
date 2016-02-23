@@ -34,10 +34,10 @@ var Model = (function () {
              self.change();
         });
          
-         this.on('controller:check_item', function(id){
-            self.deleteItem(id);
-             self.change();
-        })
+//         this.on('controller:check_item', function(id){
+//            self.checkItem(id);
+//             self.change();
+//        })
     }
 
     Model.prototype.getItems = function () {
