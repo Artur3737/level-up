@@ -34,10 +34,10 @@ var View = (function () {
                 + '</li>',
             template = defaultTemplate.replace('{{id}}', item.id);
 
-        template = template.replace('{{complited}}', item.complited);
+        template = template.replace('{{completed}}', item.completed);
         template = template.replace('{{checked}}', item.checked);
         template = template.replace('{{title}}', item.title);
-
+        debugger;
         this.view = this.view + template;
     };
 
@@ -49,7 +49,9 @@ var View = (function () {
                 var title = self.input.val();
                 //навешевание слбытия на клавишу enter code = 13
                 if((e.which === 13 || e.type === 'blur') && title) {
+                    debugger;
                     handler(title);
+
                     self.input.val('');
                 }
             });

@@ -4,21 +4,20 @@
 var Model = (function () {
     function Model() {
         this.items = [{
-            id: 0,
-            title: "Test",
-            completed: true,
-            checked: 'checked'
-        },
+                id: 0,
+                title: "Test",
+                completed: true
+            },
             {
                 id: 1,
                 title: 'test2',
-                complited: false,
-                checked: ''
+                completed: false
             }
         ]
     }
 
     Model.prototype.getAll = function () {
+        debugger;
         return this.items;
     };
 
