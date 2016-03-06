@@ -9,6 +9,8 @@ var View = (function () {
         this.activeBtn = $('#active');
         this.input = $('.new-todo');
         this.output = $('.todo-list');
+        this.clearBtn = $('.clear-completed');
+        this.filters = $('.filters a');
     }
 
     View.prototype.render = function (todos) {
@@ -25,7 +27,7 @@ var View = (function () {
 
     View.prototype.renderOne = function (item) {
         //Шаблон для отрисовки одного элемента списка
-        var defaultTemplate = '<li data-id="{{id}}" class="{{complited}}">'
+        var defaultTemplate = '<li data-id="{{id}}" class="{{completed}}">'
                 + '<div class="view">'
                 + '<input class="toggle" type="checkbox" {{checked}}>'
                 + '<label>{{title}}</label>'
@@ -34,8 +36,8 @@ var View = (function () {
                 + '</li>',
             template = defaultTemplate.replace('{{id}}', item.id);
 
-        template = template.replace('{{completed}}', item.completed);
-        template = template.replace('{{checked}}', item.checked);
+        template = template.replace('{{completed}}', item.completed? 'completed': "");
+        template = template.replace('{{checked}}', item.completed? 'checked': '');
         template = template.replace('{{title}}', item.title);
         debugger;
         this.view = this.view + template;
@@ -55,6 +57,37 @@ var View = (function () {
                     self.input.val('');
                 }
             });
+        }
+
+        if (channelName === 'remove') {
+
+            this.output.on('click', function (e) {
+                if($(e.target).hasClass('destroy')) {
+                    var removedId = $(e.target).closest('li').attr('data-id');
+                    handler(removedId);
+                };
+            });
+        }
+
+        if (channelName === 'complete') {
+            this.output.on('click', function (e) {
+                if($(e.target).hasClass('toggle')) {
+                    var completedId = $(e.target).closest('li').attr('data-id');
+                    handler(completedId);
+                }
+            })
+        }
+
+        if (channelName === 'removeCompleted') {
+            this.clearBtn.on('click', function () {
+                handler();
+            });
+        }
+
+        if (channelName === 'filter') {
+            this.filters.on('click', function () {
+                handler($(this).attr('data-id'));
+            })
         }
 
     };

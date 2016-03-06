@@ -13,12 +13,30 @@ var Model = (function () {
                 title: 'test2',
                 completed: false
             }
-        ]
+        ];
+        this.activeFilter = 'all';
     }
 
-    Model.prototype.getAll = function () {
+    Model.prototype.toFilter = function (filterType) {
+        this.activeFilter = filterType;
+
+    };
+
+    Model.prototype.get = function () {
         debugger;
-        return this.items;
+        var self = this;
+
+        var filters = {
+            'completed': function () {
+                return self.items.filter(function (item) {
+                    return item.completed
+                });
+            },
+            'all': function () {
+                return self.items;
+            }
+        }
+        return filters[this.activeFilter]();
     };
 
     function generateId() {
@@ -29,13 +47,40 @@ var Model = (function () {
         var model = {
             id: generateId(),
             title: itemTitle,
-            complited: false,
+            completed: false,
             checked: ''
         };
 
         this.items.push(model);
         debugger;
     };
+
+    Model.prototype.deleteItem = function (removedId) {
+       var t =  this.items.filter (function (item) {
+            return item.id === parseInt(removedId);
+        });
+       var index = this.items.indexOf(t[0]);
+       this.items.splice(index, 1);
+    };
+
+    Model.prototype.completedItem = function (completedItem) {
+        var t =  this.items.filter (function (item) {
+            return item.id === parseInt(completedItem);
+        });
+        var index = this.items.indexOf(t[0]);
+        this.items[index].completed = !this.items[index].completed;
+    };
+
+    Model.prototype.clearCompleted = function () {      
+        this.items = this.items.filter (function (item) {
+            return !item.completed;
+        });        
+    };
+   
+
+    Model.prototype.activeItems = function () {
+        
+    }
 
 
     return Model;
