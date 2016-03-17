@@ -33,6 +33,11 @@ var Controller = (function () {
         this.view.addChannels('filter', function (filterType) {
             self.model.toFilter(filterType);
             self.show();
+        });
+
+        this.view.addChannels('toggleAll', function (completedItem) {
+            self.model.toggleAll();
+            self.show();
         })
     }
 
@@ -46,4 +51,4 @@ var Controller = (function () {
     };
 
     return Controller;
-})();
+})(); 

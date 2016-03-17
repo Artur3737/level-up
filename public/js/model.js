@@ -18,12 +18,10 @@ var Model = (function () {
     }
 
     Model.prototype.toFilter = function (filterType) {
-        this.activeFilter = filterType;
-
+        this.activeFilter = filterType; 
     };
 
     Model.prototype.get = function () {
-        debugger;
         var self = this;
 
         var filters = {
@@ -34,6 +32,11 @@ var Model = (function () {
             },
             'all': function () {
                 return self.items;
+            },
+            'active': function () {
+                return self.items.filter(function (item) {
+                    return !item.completed
+                });
             }
         }
         return filters[this.activeFilter]();
@@ -52,7 +55,6 @@ var Model = (function () {
         };
 
         this.items.push(model);
-        debugger;
     };
 
     Model.prototype.deleteItem = function (removedId) {
@@ -66,7 +68,7 @@ var Model = (function () {
     Model.prototype.completedItem = function (completedItem) {
         var t =  this.items.filter (function (item) {
             return item.id === parseInt(completedItem);
-        });
+        }); 
         var index = this.items.indexOf(t[0]);
         this.items[index].completed = !this.items[index].completed;
     };
@@ -76,12 +78,12 @@ var Model = (function () {
             return !item.completed;
         });        
     };
-   
 
-    Model.prototype.activeItems = function () {
-        
+    Model.prototype.toggleAll = function () {
+        this.items.forEach (function(item) {           
+            item.completed = !item.completed;
+        });
     }
-
-
+    
     return Model;
-})();
+})(); 
